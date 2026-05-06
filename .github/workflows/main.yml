@@ -10,4 +10,5 @@ jobs:
         run: echo "Hello workflow action triggered"
       - name: "Checkout the code"
         uses: actions/checkout@v4
-      
+      - name: "Installing Node"
+        run: npm install
