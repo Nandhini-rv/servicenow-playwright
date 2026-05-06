@@ -43,7 +43,7 @@ A Playwright-based end-to-end test automation framework for ServiceNow, built wi
 
 ---
 
-## Project Structure
+## Project Structure Details
 
 ```
 ServiceNow/
