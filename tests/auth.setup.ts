@@ -11,8 +11,7 @@ const SERVICE_NOW_PASSWORD = process.env.PASSWORD!
 const CRED_PATH = '.auth/credential.json'
 
 setup("Authenticate - Service Now", async ({ page }) => {
-    if (fs.existsSync(CRED_PATH)) return
-
+    fs.rmSync(path.dirname(CRED_PATH), { recursive: true, force: true })
     fs.mkdirSync(path.dirname(CRED_PATH), { recursive: true })
 
     const loginPage = new LoginPage(page)

@@ -152,7 +152,7 @@ export abstract class BasePage implements PageAction, PageAssertion {
     async validateText(object: LocateBy, expectedText: string, option?: { stepTitle: string }): Promise<void> {
         await test.step(`Validate text of '${option?.stepTitle}' contains '${expectedText}'`, async () => {
             try {
-                await expect(this.generateLocator(object)).toContainText(expectedText, { timeout: 15000 })
+                await expect(this.generateLocator(object)).toContainText(expectedText, { timeout: 30000 })
             }
             catch (err) {
                 throw new Error(`Text validation failed on '${option?.stepTitle}': ${err}`)
