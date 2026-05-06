@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Download Repo"
-        run: echo "Hello"
+        run: echo "Hello workflow action triggered"
       - name: "Checkout the code"
         uses: actions/checkout@v4
       
