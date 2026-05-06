@@ -1,6 +1,6 @@
 name: "my workflow"
 
-on: push
+on: ['push', 'pull_request', 'workflow_dispatch']
 
 jobs:
   my-job:
@@ -8,3 +8,6 @@ jobs:
     steps:
       - name: "Download Repo"
         run: echo "Hello"
+      - name: "Checkout the code"
+        uses: actions/checkout@v4
+      
