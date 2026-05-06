@@ -1,6 +1,6 @@
 name: "my workflow"
 
-on: ['push', 'pull_request', 'workflow_dispatch']
+on: ["push", "pull_request", "workflow_dispatch"]
 
 jobs:
   my-job:
@@ -11,14 +11,24 @@ jobs:
       USER_NAME: ${{ secrets.SERVICENOW_USERNAME }}
       PASSWORD: ${{ secrets.SERVICENOW_PASSWORD }}
       CI: "true"
-      
+
     steps:
       - name: "Download Repo"
         run: echo "Hello workflow action triggered"
       - name: "Checkout the code"
         uses: actions/checkout@v4
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: "Installing Node"
         run: npm install
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
       - name: "Run playwright test"
