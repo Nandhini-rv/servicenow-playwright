@@ -28,4 +28,8 @@ jobs:
         with:
           name: Execution-report
           path: playwright-report
-
+      - name: "download Playwright Report"
+        uses: actions/download-artifact@v4
+        with:
+          name: Execution-report
+          path: playwright-report
