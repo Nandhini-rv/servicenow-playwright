@@ -2,6 +2,7 @@ import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/homePage";
 import { IncidentHomePage } from "../page-objects/incidentHomePage";
 import { IncidentPage } from "../page-objects/incidentPage";
+import { saveIncidentNumber, loadIncidentNumber } from "../utils/dataHelper";
 
 const SERVICE_NOW_URL = process.env.URL!
 
@@ -23,6 +24,9 @@ test.describe("Service Now Incident Functionalities Check", async () => {
         await incidentPage.pageLoad()
         await incidentPage.enterShortDescription("Test Description")
         await incidentPage.clickSubmitButton()
+        const createdIncidentNumber = await incidentPage.captureIncidentNumber()
+        saveIncidentNumber(createdIncidentNumber)
+        console.log(`Created Incident Number: ${createdIncidentNumber}`)
     })
 
     test("Search and Update Incident - Service Now", async ({ page }) => {
@@ -35,7 +39,8 @@ test.describe("Service Now Incident Functionalities Check", async () => {
         await homePage.selectAllMenu()
         await homePage.selectIncidentMenu()
         await incHomePage.pageTitleCheck()
-        await incHomePage.searchIncident("INC0010035")
+        const incidentNumberForUpdate = loadIncidentNumber()
+        await incHomePage.searchIncident(incidentNumberForUpdate)
         await incHomePage.clickIncidentLink()
         await incidentPage.pageTitleCheck()
         await incidentPage.pageLoad()
@@ -46,7 +51,7 @@ test.describe("Service Now Incident Functionalities Check", async () => {
 
     })
 
-    test("Close Incident - Service Now", async ({ page }) => {
+    test("Resolve Incident - Service Now", async ({ page }) => {
         const homePage = new HomePage(page)
         const incHomePage = new IncidentHomePage(page)
         const incidentPage = new IncidentPage(page)
@@ -57,12 +62,14 @@ test.describe("Service Now Incident Functionalities Check", async () => {
         await homePage.selectIncidentMenu()
         await incHomePage.pageTitleCheck()
         await incHomePage.validatePageLoad()
-        await incHomePage.searchIncident("INC0010035")
+        const incidentNumberForResolve = loadIncidentNumber()
+        await incHomePage.searchIncident(incidentNumberForResolve)
         await incHomePage.clickIncidentLink()
         await incidentPage.pageTitleCheck()
         await incidentPage.pageLoad()
         await incidentPage.updateCloseDate()
-        await incidentPage.enterShortDescription("Closing the Incident")
+        await incidentPage.enterShortDescription("Resolving the Incident")
+        await incidentPage.clickResolveButton()
 
     })
 
@@ -76,7 +83,8 @@ test.describe("Service Now Incident Functionalities Check", async () => {
         await homePage.selectAllMenu()
         await homePage.selectIncidentMenu()
         await incHomePage.pageTitleCheck()
-        await incHomePage.SearchIncidentCheckBox("INC0010038")
+        const incidentNumberForCheck = loadIncidentNumber()
+        await incHomePage.SearchIncidentCheckBox(incidentNumberForCheck)
 
     })
 

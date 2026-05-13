@@ -16,6 +16,7 @@ export class IncidentPage extends BasePage {
     private readonly urgencyDropdown: Locator
     private readonly stateDropdown: Locator
     private readonly pageTitle: Locator
+    private readonly incidentNumberField: Locator
 
 
     constructor(page: Page) {
@@ -32,11 +33,12 @@ export class IncidentPage extends BasePage {
         this.urgencyDropdown = this.iframe.locator('select[id="incident.urgency"]')
         this.stateDropdown = this.iframe.locator('select[id="incident.state"]')
         this.pageTitle = page.locator(".polaris-header-experience-title .experience-title")
+        this.incidentNumberField = this.iframe.locator('input[id="incident.number"]')
 
     }
 
     async pageTitleCheck(): Promise<void> {
-        await this.validateText(this.pageTitle,"Incident - ",{stepTitle: 'Incident Page'})
+        await this.validateText(this.pageTitle, "Incident - ", { stepTitle: 'Incident Page' })
     }
 
     async enterShortDescription(description: string): Promise<void> {
@@ -89,7 +91,18 @@ export class IncidentPage extends BasePage {
         await this.waitForFrameLoad('gsft_main')
     }
 
-    
+    async captureIncidentNumber(): Promise<string> {
+        return await test.step('Capture Incident Number from form', async () => {
+            await this.waitForPageLoad()
+            await this.waitForFrameLoad('gsft_main')
+            await this.expectPollVisibility(this.incidentNumberField, { stepTitle: 'Incident Number Field' })
+            const incNumber = await this.incidentNumberField.inputValue()
+            if (!incNumber) throw new Error('Could not capture incident number — field was empty')
+            return incNumber
+        })
+    }
+
+
 
 
 

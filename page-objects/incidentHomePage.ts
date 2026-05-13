@@ -61,7 +61,7 @@ export class IncidentHomePage extends BasePage {
         for (let i = 0; i < rowCount; i++) {
             const row = this.rows.nth(i)
             const secondColText = await row.locator("td").nth(2).innerText()
-            console.log(`Second column text: ${secondColText}`)
+            //console.log(`Second column text: ${secondColText}`)
             if (secondColText.trim() === targetValue) {
                 const checkbox = row.locator("td").nth(0).locator("input[type='checkbox']")
                 await this.clickOn(checkbox, { stepTitle: "Select Incident Checkbox" })

@@ -48,6 +48,7 @@ A Playwright-based end-to-end test automation framework for ServiceNow, built wi
 ```
 ServiceNow/
 ├── tests/
+│   ├── auth.setup.ts         # Authentication setup (saves browser state)
 │   └── test.spec.ts          # All test scenarios
 ├── page-objects/
 │   ├── loginPage.ts          # Login page interactions
@@ -88,13 +89,13 @@ The login test saves the authenticated browser state to `.auth/credential.json`.
 
 ## Test Scenarios
 
-| Test                                      | Description                                                              |
-| ----------------------------------------- | ------------------------------------------------------------------------ |
-| **Service Now Login Functionality Check** | Navigates to the app, logs in with credentials, and saves the auth state |
-| **Create Incident**                       | Creates a new incident with a short description                          |
-| **Search and Update Incident**            | Searches for an existing incident by number and updates its details      |
-| **Close Incident**                        | Searches for an incident and sets a close date                           |
-| **Check Incident**                        | Searches the incident list and selects a specific incident by checkbox   |
+| Test                                     | Description                                                                                                 |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Authenticate - Service Now** _(setup)_ | Navigates to the app, logs in with credentials, and saves the browser auth state to `.auth/credential.json` |
+| **Create Incident**                      | Creates a new incident with a short description                                                             |
+| **Search and Update Incident**           | Searches for an existing incident by number and updates its details                                         |
+| **Close Incident**                       | Searches for an incident and sets a close date                                                              |
+| **Check Incident**                       | Searches the incident list and selects a specific incident by checkbox                                      |
 
 ---
 
@@ -105,7 +106,8 @@ The login test saves the authenticated browser state to `.auth/credential.json`.
 | [Playwright](https://playwright.dev/) | ^1.59.1 | Browser automation and test runner          |
 | TypeScript                            | —       | Type-safe test authoring                    |
 | dotenv                                | ^17.4.2 | Environment variable management             |
-| cross-env                             | —       | Cross-platform environment variable setting |
+| cross-env                             | ^10.1.0 | Cross-platform environment variable setting |
+| @types/node                           | ^25.6.0 | TypeScript type definitions for Node.js     |
 
 ---
 
@@ -156,8 +158,6 @@ $env:ENV="qa"; npx playwright test tests/test.spec.ts
 # Open the HTML report after a run
 npx playwright show-report
 ```
-
-> `--workers=1` is automatically set for headed runs to prevent multiple browser windows opening simultaneously.
 
 ---
 
